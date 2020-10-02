@@ -1,9 +1,10 @@
 $(document).ready(function () {
-  //endpoints
+  //endpoints and authorization
   var identityEndpoint =
     'http://identity-nlb-dev-e81f9e4165eb0f4b.elb.eu-central-1.amazonaws.com';
   var serviceEndpoint =
     'https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com';
+  var authorization = 'Bearer ' + $('#token').val();
 
   //handle token
   $('#get-token').click(function (e) {
@@ -54,15 +55,20 @@ $(document).ready(function () {
     $.ajax({
       type: 'POST',
       url: url,
-      data: requestBody,
+      crossDomain: true,
+      "headers": {
+        "Authorization": authorization,
+        "Content-Type": "application/json"
+      },
+      data: JSON.stringify(requestBody),
     })
       .done(function (data) {
         console.log(data);
         $.notify(data, 'info');
       })
-      .fail(function (data) {
+      .fail(function (jqXHR) {
         console.log('Manual bid failed');
-        console.log(data);
+        console.log(jqXHR.responseJSON.message);
         $.notify('Manual bid failed', 'error');
       });
   });
@@ -82,15 +88,20 @@ $(document).ready(function () {
     $.ajax({
       type: 'POST',
       url: url,
-      data: requestBody,
+      crossDomain: true,
+      "headers": {
+        "Authorization": authorization,
+        "Content-Type": "application/json"
+      },
+      data: JSON.stringify(requestBody)
     })
       .done(function (data) {
         console.log(data);
         $.notify(data, 'info');
       })
-      .fail(function (data) {
+      .fail(function (jqXHR) {
         console.log('Auto bid failed');
-        console.log(data);
+        console.log(jqXHR.responseJSON.message);
         $.notify('Auto bid failed', 'error');
       });
   });
