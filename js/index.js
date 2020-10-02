@@ -1,23 +1,30 @@
 $(document).ready(function () {
+  //endpoints
+  var identityEndpoint =
+    'http://identity-nlb-dev-e81f9e4165eb0f4b.elb.eu-central-1.amazonaws.com';
+  var serviceEndpoint =
+    'https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com';
+
+  //handle token
   $('#get-token').click(function (e) {
     e.preventDefault();
     $.notify('Getting token, please wait', 'info');
 
     var password = $('#password').val();
     var username = $('#user').val();
-    var identityUrl =
-      'http://identity-nlb-dev-e81f9e4165eb0f4b.elb.eu-central-1.amazonaws.com/connect/token';
+    var identityUrl = identityEndpoint + '/connect/token';
+    var identityRequestBody = {
+      client_id: 'autoproff',
+      client_secret: 'autoproff',
+      grant_type: 'password',
+      password: password,
+      username: username,
+    };
 
     $.ajax({
       type: 'POST',
       url: identityUrl,
-      data: {
-        client_id: 'autoproff',
-        client_secret: 'autoproff',
-        grant_type: 'password',
-        password: password,
-        username: username,
-      },
+      data: identityRequestBody,
     })
       .done(function (data) {
         console.log('Success');
@@ -32,18 +39,18 @@ $(document).ready(function () {
       });
   });
 
-  var serviceEndpoint =
-    'https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com/dev/api/auctionslots/';
+  //handle manual bid
   $('#manual-bid').click(function (e) {
     e.preventDefault();
+    $.notify('Placing manual bid', 'info');
 
     var slotId = $('#auction-slot-id').val();
     var requestBody = {
       bidAmount: $('#manual-bid-current').val() + $('#bid-increase').val(),
       currency: $('#currency-code').val(),
     };
+    var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/bid';
 
-    var url = serviceEndpoint + slotId + '/bid';
     $.ajax({
       type: 'POST',
       url: url,
@@ -51,23 +58,27 @@ $(document).ready(function () {
     })
       .done(function (data) {
         console.log(data);
+        $.notify(data, 'info');
       })
       .fail(function (data) {
         console.log('Manual bid failed');
         console.log(data);
+        $.notify('Manual bid failed', 'error');
       });
   });
 
+  //handle autobid
   $('#auto-bid').click(function (e) {
     e.preventDefault();
+    $.notify('Placing auto bid', 'info');
 
     var slotId = $('#auction-slot-id').val();
     var requestBody = {
       maxPrice: $('#autobid-max').val(),
       currency: $('#currency-code').val(),
     };
-
     var url = serviceEndpoint + slotId + '/autobid';
+
     $.ajax({
       type: 'POST',
       url: url,
@@ -75,13 +86,16 @@ $(document).ready(function () {
     })
       .done(function (data) {
         console.log(data);
+        $.notify(data, 'info');
       })
       .fail(function (data) {
         console.log('Auto bid failed');
         console.log(data);
+        $.notify('Auto bid failed', 'error');
       });
   });
 
+  //handle firebase
   var firebaseConfig = {
     apiKey: 'AIzaSyC_SwM-Rc9X7DHmGkz34hN18Asb6MCK2P8',
     authDomain: 'auctionservicedev.firebaseapp.com',
@@ -95,9 +109,9 @@ $(document).ready(function () {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   var db = firebase.firestore();
-  db.collection('cities')
-    .doc('test-realtime')
-    .onSnapshot(function (doc) {
-      console.log('Current data: ', doc.data());
+  db.collection('AddBidEvent').onSnapshot(function (doc) {
+    doc.forEach(function (data) {
+      console.log(data.data());
     });
+  });
 });
