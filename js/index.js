@@ -4,7 +4,6 @@ $(document).ready(function () {
     'http://identity-nlb-dev-e81f9e4165eb0f4b.elb.eu-central-1.amazonaws.com';
   var serviceEndpoint =
     'https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com';
-  var authorization = 'Bearer ' + $('#token').val();
 
   //handle token
   $('#get-token').click(function (e) {
@@ -51,12 +50,13 @@ $(document).ready(function () {
       currency: $('#currency-code').val(),
     };
     var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/bid';
+    var authorization = 'Bearer ' + $('#token').val();
 
     $.ajax({
       type: 'POST',
       url: url,
       crossDomain: true,
-      "headers": {
+      headers: {
         "Authorization": authorization,
         "Content-Type": "application/json"
       },
@@ -83,17 +83,18 @@ $(document).ready(function () {
       maxPrice: $('#autobid-max').val(),
       currency: $('#currency-code').val(),
     };
-    var url = serviceEndpoint + slotId + '/autobid';
+    var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/autobid';
+    var authorization = 'Bearer ' + $('#token').val();
 
     $.ajax({
       type: 'POST',
       url: url,
       crossDomain: true,
-      "headers": {
+      headers: {
         "Authorization": authorization,
         "Content-Type": "application/json"
       },
-      data: JSON.stringify(requestBody)
+      data: JSON.stringify(requestBody),
     })
       .done(function (data) {
         console.log(data);
