@@ -29,6 +29,55 @@ $(document).ready(function () {
       });
   });
 
+  var serviceEndpoint = "https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com/dev/api/auctionslots/";
+  $('#manual-bid').click(function(e) {
+    e.preventDefault();
+
+    var slotId = $('#auction-slot-id').val();
+    var requestBody = {
+      "bidAmount": $('#manual-bid-current').val() + $('#bid-increase').val(),
+      "currency": $('#currency-code').val()
+    }
+
+    var url = serviceEndpoint + slotId + "/bid";
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: requestBody
+    })
+    .done(function (data) {
+      console.log(data)
+    })
+    .fail(function (data) {
+      console.log('Manual bid failed');
+      console.log(data);
+    });
+  })
+
+  $('#auto-bid').click(function(e) {
+    e.preventDefault();
+
+    var slotId = $('#auction-slot-id').val();
+    var requestBody = {
+      "maxPrice": $('#autobid-max').val(),
+      "currency": $('#currency-code').val()
+    }
+
+    var url = serviceEndpoint + slotId + "/autobid";
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: requestBody
+    })
+    .done(function (data) {
+      console.log(data)
+    })
+    .fail(function (data) {
+      console.log('Auto bid failed');
+      console.log(data);
+    });
+  })
+
   var firebaseConfig = {
     apiKey: 'AIzaSyC_SwM-Rc9X7DHmGkz34hN18Asb6MCK2P8',
     authDomain: 'auctionservicedev.firebaseapp.com',

@@ -62,17 +62,17 @@
               >
               <form class="row">
                 <div class="form-group col-6">
-                  <label for="auctionSlotId">AuctionSlot Id</label>
+                  <label for="auction-slot-id">AuctionSlot Id</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="auctionSlotId"
+                    id="auction-slot-id"
                     placeholder="auctionSlotId"
                   />
                 </div>
                 <div class="form-group col-6">
-                  <label for="currencyCode">Currency</label>
-                  <select class="form-control" id="currencyCode">
+                  <label for="currency-code">Currency</label>
+                  <select class="form-control" id="currency-code">
                     <option value="DKK">DKK</option>
                     <option value="EUR">EUR</option>
                     <option value="VND">VND</option>
@@ -81,7 +81,7 @@
               </form>
               <div class="form-group">
                 <label for="manual-bid-current">Current Price</label>
-                <h1 class="display-4" id="manual-bid-current">$1000</h1>
+                <h1 class="display-4" id="manual-bid-current">1000</h1>
               </div>
             </div>
           </div>
@@ -90,7 +90,7 @@
               <h6 class="border-bottom border-gray pb-2 mb-3">Manual Bid</h6>
               <form class="form">
                 <div class="mb-3"
-                  >Bid Increase: <strong id="bidIncrease">$500</strong>
+                  >Bid Increase: <strong id="bid-increase">500</strong>
                 </div>
                 <button type="submit" id="manual-bid" class="btn btn-primary"
                   >Place bid</button
@@ -103,15 +103,15 @@
               <h6 class="border-bottom border-gray pb-2 mb-3">Auto Bid</h6>
               <form class="form">
                 <div class="form-group">
-                  <label for="auctionSlotId">Max autobid price</label>
+                  <label for="autobid-max">Max autobid price</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="autobidMax"
+                    id="autobid-max"
                     placeholder="Max price for autobid"
                   />
                 </div>
-                <button type="submit" id="manual-bid" class="btn btn-primary"
+                <button type="submit" id="auto-bid" class="btn btn-primary"
                   >Place bid</button
                 >
               </form>
