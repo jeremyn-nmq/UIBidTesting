@@ -4,6 +4,22 @@ $(document).ready(function () {
     'http://identity-nlb-dev-e81f9e4165eb0f4b.elb.eu-central-1.amazonaws.com';
   var serviceEndpoint =
     'https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com';
+  let bidIncrease = parseInt($('#bid-increase').html());
+  var currencyCode = $('#currency-code').val();
+
+  //handle inputs
+  $('.actions').prop('disabled', true);
+
+  $('#token-area').keyup(function () {
+    $('#token-area').find("button").prop('disabled', $('#user').val() == "" || $('#password').val() != "testPassword" ? true : false);
+  });
+
+  $('#bid-area').keyup(function () {
+    let token = $('#token').val();
+    let slotId = $('#auction-slot-id').val();
+    $('#bid-area').find("#manual-bid").prop('disabled', token == "" || slotId == "" ? true : false);
+    $('#bid-area').find("#auto-bid").prop('disabled', token == "" || slotId == "" || $('#autobid-max').val() == "" ? true : false);
+  })
 
   //handle token
   $('#get-token').click(function (e) {
@@ -45,9 +61,10 @@ $(document).ready(function () {
     $.notify('Placing manual bid', 'info');
 
     var slotId = $('#auction-slot-id').val();
+    let currentBid = parseInt($('#manual-bid-current').html());
     var requestBody = {
-      bidAmount: $('#manual-bid-current').val() + $('#bid-increase').val(),
-      currency: $('#currency-code').val(),
+      bidAmount: currentBid + bidIncrease,
+      currency: currencyCode,
     };
     var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/bid';
     var authorization = 'Bearer ' + $('#token').val();
@@ -69,7 +86,7 @@ $(document).ready(function () {
       .fail(function (jqXHR) {
         console.log('Manual bid failed');
         console.log(jqXHR.responseJSON.message);
-        $.notify('Manual bid failed', 'error');
+        $.notify(jqXHR.responseJSON.message, 'error');
       });
   });
 
@@ -79,9 +96,11 @@ $(document).ready(function () {
     $.notify('Placing auto bid', 'info');
 
     var slotId = $('#auction-slot-id').val();
+    var maxAutoBidPrice = $('#autobid-max').val();
+
     var requestBody = {
-      maxPrice: $('#autobid-max').val(),
-      currency: $('#currency-code').val(),
+      maxPrice: maxAutoBidPrice,
+      currency: currencyCode,
     };
     var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/autobid';
     var authorization = 'Bearer ' + $('#token').val();
@@ -103,7 +122,7 @@ $(document).ready(function () {
       .fail(function (jqXHR) {
         console.log('Auto bid failed');
         console.log(jqXHR.responseJSON.message);
-        $.notify('Auto bid failed', 'error');
+        $.notify(jqXHR.responseJSON.message, 'error');
       });
   });
 
