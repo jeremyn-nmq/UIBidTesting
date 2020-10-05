@@ -142,7 +142,9 @@ $(document).ready(function () {
   var db = firebase.firestore();
   db.collection('AddBidEvent').onSnapshot(function (doc) {
     doc.forEach(function (data) {
-      console.log(data.data());
+      if (data.id == $('#auction-slot-id').val()) {
+        $('#manual-bid-current').html(data.data().currentPrice);
+      }
     });
   });
 });
