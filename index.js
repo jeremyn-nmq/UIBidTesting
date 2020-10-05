@@ -4,8 +4,6 @@ $(document).ready(function () {
     'http://identity-nlb-dev-e81f9e4165eb0f4b.elb.eu-central-1.amazonaws.com';
   var serviceEndpoint =
     'https://6k7536fv9c.execute-api.eu-central-1.amazonaws.com';
-  let bidIncrease = parseInt($('#bid-increase').html());
-  var currencyCode = $('#currency-code').val();
 
   //handle inputs
   $('.actions').prop('disabled', true);
@@ -17,7 +15,7 @@ $(document).ready(function () {
   $('#bid-area').keyup(function () {
     let token = $('#token').val();
     let slotId = $('#auction-slot-id').val();
-    $('#bid-area').find("#manual-bid").prop('disabled', token == "" || slotId == "" ? true : false);
+    $('#bid-area').find("#manual-bid").prop('disabled', token == "" || slotId == "" || $('#bid-increase').val() == "" ? true : false);
     $('#bid-area').find("#auto-bid").prop('disabled', token == "" || slotId == "" || $('#autobid-max').val() == "" ? true : false);
   })
 
@@ -61,7 +59,9 @@ $(document).ready(function () {
     $.notify('Placing manual bid', 'info');
 
     var slotId = $('#auction-slot-id').val();
-    let currentBid = parseInt($('#manual-bid-current').html());
+    let bidIncrease = parseInt($('#bid-increase').val());
+    var currencyCode = $('#currency-code').val();
+    let currentBid = parseInt($('#manual-bid-current').val());
     var requestBody = {
       bidAmount: currentBid + bidIncrease,
       currency: currencyCode,
@@ -81,7 +81,7 @@ $(document).ready(function () {
     })
       .done(function (data) {
         console.log(data);
-        $.notify(data, 'info');
+        $.notify(data.message, 'info');
       })
       .fail(function (jqXHR) {
         console.log('Manual bid failed');
@@ -96,7 +96,8 @@ $(document).ready(function () {
     $.notify('Placing auto bid', 'info');
 
     var slotId = $('#auction-slot-id').val();
-    var maxAutoBidPrice = $('#autobid-max').val();
+    var maxAutoBidPrice = parseInt($('#autobid-max').val());
+    var currencyCode = $('#currency-code').val();
 
     var requestBody = {
       maxPrice: maxAutoBidPrice,
@@ -117,7 +118,7 @@ $(document).ready(function () {
     })
       .done(function (data) {
         console.log(data);
-        $.notify(data, 'info');
+        $.notify(data.message, 'info');
       })
       .fail(function (jqXHR) {
         console.log('Auto bid failed');
@@ -143,7 +144,15 @@ $(document).ready(function () {
   db.collection('AddBidEvent').onSnapshot(function (doc) {
     doc.forEach(function (data) {
       if (data.id == $('#auction-slot-id').val()) {
-        $('#manual-bid-current').html(data.data().currentPrice);
+        var bidData = data.data();
+        $('#manual-bid-current').val(data.data().currentPrice);
+        $('.alert.alert-success').removeClass().addClass("alert alert-secondary");
+        var innerHtml = $('#bid-history').html();
+        var historyRecord = '<div class="alert alert-success" role="alert">' +
+          bidData.currentPrice + ' - ' + bidData.buyerName
+          + '</div>';
+        historyRecord += innerHtml;
+        $('#bid-history').html(historyRecord);
       }
     });
   });
