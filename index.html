@@ -1,125 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-    <main
-      role="main"
-      class="container-fluid h-100"
-      style="background-color: lavender"
-    >
-      <div class="row justify-content-center h-100">
-        <div class="col-sm-4 p-5">
-          <div class="my-3 p-3 bg-white rounded box-shadow shadow-lg">
-            <form>
-              <div class="form-group">
-                <label for="user">Username</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="user"
-                  value="test@mail.com"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  value="testPassword"
-                  required
-                />
-              </div>
-              <button type="submit" id="get-token" class="btn btn-primary"
-                >Get token</button
-              >
-            </form>
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <main role="main" class="container-fluid h-100" style="background-color: lavender">
+    <div class="row justify-content-center h-100">
+      <div class="col-sm-4 p-5">
+        <div class="my-3 p-3 bg-white rounded box-shadow shadow-lg">
+          <form id="token-area">
             <div class="form-group">
-              <label for="token">Returned token</label>
-              <textarea
-                class="form-control"
-                id="token"
-                rows="10"
-                readonly
-              ></textarea>
+              <label for="user">Username</label>
+              <input type="email" class="form-control" id="user" required />
             </div>
-          </div>
-        </div>
-        <div class="col-sm-8 p-5">
-          <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
-            <h6 class="border-bottom border-gray pb-2 mb-3"
-              >Find AuctionSlot</h6
-            >
-            <form class="row">
-              <div class="form-group col-6">
-                <label for="auction-slot-id">AuctionSlot Id</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="auction-slot-id"
-                  placeholder="auctionSlotId"
-                />
-              </div>
-              <div class="form-group col-6">
-                <label for="currency-code">Currency</label>
-                <select class="form-control" id="currency-code">
-                  <option value="DKK">DKK</option>
-                  <option value="EUR">EUR</option>
-                  <option value="VND">VND</option>
-                </select>
-              </div>
-            </form>
             <div class="form-group">
-              <label for="manual-bid-current">Current Price</label>
-              <h1 class="display-4" id="manual-bid-current">1000</h1>
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" required />
             </div>
-          </div>
-          <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
-            <h6 class="border-bottom border-gray pb-2 mb-3">Manual Bid</h6>
-            <form class="form">
-              <div class="mb-3"
-                >Bid Increase: <strong id="bidIncrease">500</strong>
-              </div>
-              <button type="submit" id="manual-bid" class="btn btn-primary"
-                >Place bid</button
-              >
-            </form>
-          </div>
-          <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
-            <h6 class="border-bottom border-gray pb-2 mb-3">Auto Bid</h6>
-            <form class="form">
-              <div class="form-group">
-                <label for="autobid-max">Max autobid price</label>
-                <input
-                  type="text"
-                  class="form-control col-6"
-                  id="autobid-max"
-                  placeholder="Max price for autobid"
-                />
-              </div>
-              <button type="submit" id="auto-bid" class="btn btn-primary"
-                >Place bid</button
-              >
-            </form>
+            <button type="submit" id="get-token" class="actions btn btn-primary">Get token</button>
+          </form>
+          <div class="form-group">
+            <label for="token">Returned token</label>
+            <textarea class="form-control" id="token" rows="10" readonly></textarea>
           </div>
         </div>
       </div>
-    </main>
-    <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase.js"></script>
-    <script src="js/notify.min.js"></script>
-    <script src="js/index.js"></script>
-  </body>
+      <div class="col-sm-8 p-5" id="bid-area">
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+          <h6 class="border-bottom border-gray pb-2 mb-3">Find AuctionSlot</h6>
+          <form class="row">
+            <div class="form-group col-6">
+              <label for="auction-slot-id">AuctionSlot Id</label>
+              <input type="text" class="form-control" id="auction-slot-id" placeholder="auctionSlotId" />
+            </div>
+            <div class="form-group col-6">
+              <label for="currency-code">Currency</label>
+              <select class="form-control" id="currency-code">
+                <option value="DKK">DKK</option>
+                <option value="EUR">EUR</option>
+                <option value="VND">VND</option>
+              </select>
+            </div>
+          </form>
+          <div class="form-group">
+            <label for="manual-bid-current">Current Price</label>
+            <h1 class="display-4" id="manual-bid-current">1000</h1>
+          </div>
+        </div>
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+          <h6 class="border-bottom border-gray pb-2 mb-3">Manual Bid</h6>
+          <form class="form">
+            <div class="mb-3">Bid Increase: <strong id="bid-increase">500</strong>
+            </div>
+            <button type="submit" id="manual-bid" class="actions btn btn-primary">Place bid</button>
+          </form>
+        </div>
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+          <h6 class="border-bottom border-gray pb-2 mb-3">Auto Bid</h6>
+          <form class="form">
+            <div class="form-group">
+              <label for="autobid-max">Max autobid price</label>
+              <input type="text" class="form-control col-6" id="autobid-max" placeholder="Max price for autobid" />
+            </div>
+            <button type="submit" id="auto-bid" class="actions btn btn-primary">Place bid</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase.js"></script>
+  <script src="js/notify.min.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
 </html>
