@@ -143,7 +143,15 @@ $(document).ready(function () {
   db.collection('AddBidEvent').onSnapshot(function (doc) {
     doc.forEach(function (data) {
       if (data.id == $('#auction-slot-id').val()) {
+        var bidData = data.data();
         $('#manual-bid-current').html(data.data().currentPrice);
+        var innerHtml = $('#bid-history').html();
+        $('#bid-history').find("alert-success").removeClass("alert-success");
+        var historyRecord = '<div class="alert alert-success" role="alert">'+
+          bidData.currentPrice + ' - ' + bidData.buyerName
+        +'</div>';
+        innerHtml += historyRecord;
+        $('#bid-history').html(innerHtml)
       }
     });
   });
