@@ -17,6 +17,7 @@ $(document).ready(function () {
     let slotId = $('#auction-slot-id').val();
     $('#bid-area').find("#manual-bid").prop('disabled', token == "" || slotId == "" || $('#bid-increase').val() == "" ? true : false);
     $('#bid-area').find("#auto-bid").prop('disabled', token == "" || slotId == "" || $('#autobid-max').val() == "" ? true : false);
+    $('#bid-area').find("#total-price").html(parseFloat($('#bid-increase').val()) + parseFloat($('#manual-bid-current').val()));
   })
 
   //handle token
@@ -144,6 +145,7 @@ $(document).ready(function () {
   db.collection('AddBidEvent').onSnapshot(function (doc) {
     doc.forEach(function (data) {
       if (data.id == $('#auction-slot-id').val()) {
+        //update current price
         var bidData = data.data();
         $('#manual-bid-current').val(data.data().currentPrice);
         $('.alert.alert-success').removeClass().addClass("alert alert-secondary");
@@ -153,6 +155,7 @@ $(document).ready(function () {
           + '</div>';
         historyRecord += innerHtml;
         $('#bid-history').html(historyRecord);
+        $('#total-price').html(parseFloat(data.data().currentPrice) + parseFloat($('#bid-increase').val()));
       }
     });
   });
