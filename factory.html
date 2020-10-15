@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Auction Factory</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Sprint 09</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.html">Bid</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/factory.html">Auction Factory</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  <main role="main" class="container-fluid h-80">
+    <div class="row justify-content-center h-100">
+      <div class="col-sm-6 p-5">
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+            <h6 class="border-bottom border-gray pb-2 mb-3">Create Auction Factory</h6>
+            <form class="row">
+              <div class="form-group col-12">
+                <label for="auction-factory-title">Title</label>
+                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+              </div>
+              <div class="form-group col-12">
+                <label for="auction-factory-title">Minimum Hours for Product On Auction</label>
+                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+              </div>
+              <div class="form-group col-12">
+                <label for="auction-factory-title">Minimum Active Auctions With Open Slots</label>
+                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+              </div>
+              <div class="form-group col-12">
+                <label for="currency-code">Auction Type</label>
+                <select class="form-control" id="currency-code">
+                  <option value="DKK">DKK</option>
+                  <option value="EUR">EUR</option>
+                  <option value="VND">VND</option>
+                </select>
+              </div>
+              <div class="form-group col-12">
+                <label for="auction-factory-title">Auction Image Url</label>
+                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+              </div>
+              <div class="form-group col-12">
+                <label for="auction-factory-title">Active From</label>
+                <input type="text" class="form-control" id="af-active-from"/>
+              </div>
+              <div class="form-group col-12">
+                <label for="auction-factory-title">extendAuctionSecond</label>
+                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+              </div>
+              <div class="form-group col-12">
+                <label for="currency-code">Auction Currency</label>
+                <select class="form-control" id="currency-code">
+                  <option value="DKK">DKK</option>
+                  <option value="EUR">EUR</option>
+                  <option value="VND">VND</option>
+                </select>
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="col-sm-6 p-5">
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+          <h6 class="border-bottom border-gray pb-2 mb-3">Find AuctionSlot</h6>
+          <form class="row">
+            <div class="form-group col-6">
+              <label for="auction-slot-id">AuctionSlot Id</label>
+              <input type="text" class="form-control" id="auction-slot-id" placeholder="auctionSlotId" />
+            </div>
+            <div class="form-group col-6">
+              <label for="currency-code">Currency</label>
+              <select class="form-control" id="currency-code">
+                <option value="DKK">DKK</option>
+                <option value="EUR">EUR</option>
+                <option value="VND">VND</option>
+              </select>
+            </div>
+          </form>
+          <div class="form-group">
+            <label for="manual-bid-current">Current Price</label>
+            <input type="text" class="form-control form-control-lg" id="manual-bid-current" placeholder="1000" />
+          </div>
+        </div>
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+          <h6 class="border-bottom border-gray pb-2 mb-3">Manual Bid</h6>
+          <form class="form">
+            <div class="form-group">
+              <label for="bid-increase">Bid Increase</label>
+              <input type="text" class="form-control col-6" id="bid-increase" placeholder="1000" />
+            </div>
+            <div class="form-group">
+              <label for="total-price">Total Estimated Price</label>
+              <h3 id="total-price">0</h3>
+            </div>
+            <button type="submit" id="manual-bid" class="actions btn btn-primary">Place bid</button>
+          </form>
+        </div>
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+          <h6 class="border-bottom border-gray pb-2 mb-3">Auto Bid</h6>
+          <form class="form">
+            <div class="form-group">
+              <label for="autobid-max">Max autobid price</label>
+              <input type="text" class="form-control col-6" id="autobid-max" placeholder="Max price for autobid" />
+            </div>
+            <button type="submit" id="auto-bid" class="actions btn btn-primary">Place bid</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

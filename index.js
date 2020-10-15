@@ -20,6 +20,13 @@ $(document).ready(function () {
     $('#bid-area').find("#total-price").html(parseFloat($('#bid-increase').val()) + parseFloat($('#manual-bid-current').val()));
   })
 
+  //handle navs
+  $(function() {
+    $('nav a[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+  });
+
+  //datetimepicker
+  $('#af-active-from').datetimepicker();
   //handle token
   $('#get-token').click(function (e) {
     e.preventDefault();
@@ -127,6 +134,34 @@ $(document).ready(function () {
         $.notify(jqXHR.responseJSON.message, 'error');
       });
   });
+
+  $('#test').click(function (e) {
+    e.preventDefault();
+    $.notify("testing cors", 'info')
+ 
+    var auctionFactoryId = '00000000-0000-0000-0000-000000000000'
+    var url = serviceEndpoint + '/dev/api/auctionrooms';
+    var authorization = 'Bearer ' + $('#token').val();
+    var requestBody = []
+    $.ajax({
+      type: 'GET',
+      url: url,
+      crossDomain: true,
+      headers: {
+        "Authorization": authorization,
+        "Content-Type": "application/json"
+      },
+      //data: JSON.stringify(requestBody),
+    })
+      .done(function (data) {
+        console.log(data);
+      })
+      .fail(function (jqXHR) {
+        console.log('Add buyer failed');
+        console.log(jqXHR.responseJSON.message);
+        $.notify(jqXHR.responseJSON.message, 'error');
+      });
+  })
 
   //handle firebase
   var firebaseConfig = {
