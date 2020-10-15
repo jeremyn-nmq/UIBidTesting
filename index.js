@@ -26,7 +26,13 @@ $(document).ready(function () {
   });
 
   //datetimepicker
-  $('#af-active-from').datetimepicker();
+  if ($('#af-active-from').length){
+    $('#af-active-from').datetimepicker({
+      format: 'Y-m-d h:m'
+    });
+  }
+ 
+  
   //handle token
   $('#get-token').click(function (e) {
     e.preventDefault();
@@ -52,6 +58,7 @@ $(document).ready(function () {
         console.log('Success');
         console.log(data);
         $('#token').val(data.access_token);
+        localStorage.token = data.access_token;
         $.notify('Token returned', 'success');
       })
       .fail(function (data) {
@@ -75,27 +82,7 @@ $(document).ready(function () {
       currency: currencyCode,
     };
     var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/bid';
-    var authorization = 'Bearer ' + $('#token').val();
-
-    $.ajax({
-      type: 'POST',
-      url: url,
-      crossDomain: true,
-      headers: {
-        "Authorization": authorization,
-        "Content-Type": "application/json"
-      },
-      data: JSON.stringify(requestBody),
-    })
-      .done(function (data) {
-        console.log(data);
-        $.notify(data.message, 'info');
-      })
-      .fail(function (jqXHR) {
-        console.log('Manual bid failed');
-        console.log(jqXHR.responseJSON.message);
-        $.notify(jqXHR.responseJSON.message, 'error');
-      });
+    handlePostRequest(localStorage.token, url, requestBody)
   });
 
   //handle autobid
@@ -112,56 +99,99 @@ $(document).ready(function () {
       currency: currencyCode,
     };
     var url = serviceEndpoint + '/dev/api/auctionslots/' + slotId + '/autobid';
-    var authorization = 'Bearer ' + $('#token').val();
 
+    handlePostRequest(localStorage.token, url, requestBody)
+  });
+
+  $('#af-create-new').click(function (e) {
+    e.preventDefault();
+    $.notify("Creating Auction Factory button pressed", 'info')
+ 
+    var url = serviceEndpoint + '/dev/api/auctionrooms';
+    var title = $('#af-title').val();
+    var minHour = parseInt($('#af-min-hour-product').val());
+    var minActive = parseInt($('#af-min-active').val());
+    var aucType = $('#af-auc-type').val();
+    var imgUrl = $('#af-url').val();
+    var activeFrom = $('#af-active-from').val().replace(/ /g,"T") + "Z";
+    var extend = parseInt($('#af-extend').val());
+    var currency = $('#af-currency-code').val();
+    var requestBody = {
+      "title": title,
+      "minHoursForProductOnAuction": minHour,
+      "minActiveAuctionsWithOpenSlots": minActive,
+      "auctionType": aucType,
+      "auctionImageUrl": imgUrl,
+      "activeFrom": activeFrom,
+      "extendAuctionSeconds": extend,
+      "auctionCurrency": currency
+    };
+    handlePostRequest(localStorage.token, url, JSON.stringify(requestBody));
+  })
+
+   //handle add buyer list
+   $('#add-buyer').click(function (e) {
+    e.preventDefault();
+    var auctionFactoryId = $('#room-id').val() === '' ? '00000000-0000-0000-0000-000000000000' : $('#room-id').val();
+    var url = serviceEndpoint + '/dev/api/auctionrooms/'+auctionFactoryId+'/buyers';
+    var requestBody = $("#buyerlist").val();
+    handlePostRequest(localStorage.token, url, requestBody)
+  })
+
+  //handle add permitted country
+  $('#add-permittedcountry').click(function (e) {
+    e.preventDefault();
+    var auctionFactoryId = $('#room-id').val() === '' ? '00000000-0000-0000-0000-000000000000' : $('#room-id').val();
+    var url = serviceEndpoint + '/dev/api/auctionrooms/'+auctionFactoryId+'/permittedcountries';
+    var requestBody = $("#permittedcountry").val();
+    handlePostRequest(localStorage.token, url, requestBody)
+  })
+
+  //handle add seller requirement
+  $('#add-sellerrequirement').click(function (e) {
+    e.preventDefault();
+    var auctionFactoryId = $('#room-id').val() === '' ? '00000000-0000-0000-0000-000000000000' : $('#room-id').val();
+    var url = serviceEndpoint + '/dev/api/auctionrooms/'+auctionFactoryId+'/sellerrequirement';
+    var requestBody = $("#sellerrequirement").val();
+    handlePostRequest(localStorage.token, url, requestBody)
+  })
+
+  //handle add country requirement
+  $('#add-countryrequirement').click(function (e) {
+    e.preventDefault();
+    var auctionFactoryId = $('#room-id').val() === '' ? '00000000-0000-0000-0000-000000000000' : $('#room-id').val();
+    var url = serviceEndpoint + '/dev/api/auctionrooms/'+auctionFactoryId+'/countryrequirement';
+    var requestBody = $("#countryrequirement").val();
+    handlePostRequest(localStorage.token, url, requestBody)
+  })
+
+  var handlePostRequest = function (token, url, body) {
     $.ajax({
       type: 'POST',
       url: url,
       crossDomain: true,
       headers: {
-        "Authorization": authorization,
+        "Authorization": 'Bearer ' + token,
         "Content-Type": "application/json"
       },
-      data: JSON.stringify(requestBody),
-    })
-      .done(function (data) {
-        console.log(data);
-        $.notify(data.message, 'info');
-      })
-      .fail(function (jqXHR) {
-        console.log('Auto bid failed');
-        console.log(jqXHR.responseJSON.message);
-        $.notify(jqXHR.responseJSON.message, 'error');
-      });
-  });
-
-  $('#test').click(function (e) {
-    e.preventDefault();
-    $.notify("testing cors", 'info')
- 
-    var auctionFactoryId = '00000000-0000-0000-0000-000000000000'
-    var url = serviceEndpoint + '/dev/api/auctionrooms';
-    var authorization = 'Bearer ' + $('#token').val();
-    var requestBody = []
-    $.ajax({
-      type: 'GET',
-      url: url,
-      crossDomain: true,
-      headers: {
-        "Authorization": authorization,
-        "Content-Type": "application/json"
-      },
-      //data: JSON.stringify(requestBody),
+      data: body,
     })
       .done(function (data) {
         console.log(data);
       })
       .fail(function (jqXHR) {
-        console.log('Add buyer failed');
-        console.log(jqXHR.responseJSON.message);
-        $.notify(jqXHR.responseJSON.message, 'error');
+        if (jqXHR.responseJSON['message']){
+          $.notify(jqXHR.responseJSON.message, 'error');
+        }
+        else{
+          $.each(jqXHR.responseJSON.errors, function(key, item) 
+          {
+            console.log(item);
+            $.notify(item);
+          });
+        }
       });
-  })
+  }
 
   //handle firebase
   var firebaseConfig = {

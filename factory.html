@@ -36,46 +36,49 @@
       <div class="col-sm-6 p-5">
         <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
             <h6 class="border-bottom border-gray pb-2 mb-3">Create Auction Factory</h6>
-            <form class="row">
+            <form class="row" id="create-area">
               <div class="form-group col-12">
-                <label for="auction-factory-title">Title</label>
-                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+                <label for="af-title">Title</label>
+                <input type="text" class="form-control" id="af-title" placeholder="Auction Factory Title" />
               </div>
               <div class="form-group col-12">
-                <label for="auction-factory-title">Minimum Hours for Product On Auction</label>
-                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+                <label for="af-min-hour-product">Minimum Hours for Product On Auction</label>
+                <input type="number" min=1 class="form-control" id="af-min-hour-product" value=1 />
               </div>
               <div class="form-group col-12">
-                <label for="auction-factory-title">Minimum Active Auctions With Open Slots</label>
-                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+                <label for="af-min-active">Minimum Active Auctions With Open Slots</label>
+                <input type="number" min=1 class="form-control" id="af-min-active" value=1 />
               </div>
               <div class="form-group col-12">
-                <label for="currency-code">Auction Type</label>
-                <select class="form-control" id="currency-code">
-                  <option value="DKK">DKK</option>
-                  <option value="EUR">EUR</option>
-                  <option value="VND">VND</option>
+                <label for="af-auc-type">Auction Type</label>
+                <select class="form-control" id="af-auc-type">
+                  <option value="Open">Open</option>
+                  <option value="Closed">Closed</option>
+                  <option value="Internal">Internal</option>
                 </select>
               </div>
               <div class="form-group col-12">
-                <label for="auction-factory-title">Auction Image Url</label>
-                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+                <label for="af-url">Auction Image URL</label>
+                <input type="text" class="form-control" id="af-url" value="https://www.supercars.net/blog/wp-content/uploads/2016/04/mclaren_p1_ferrari_laferrari_97457_3840x2160-e1460379150943.jpg"/>
               </div>
               <div class="form-group col-12">
-                <label for="auction-factory-title">Active From</label>
+                <label for="af-active-from">Active From</label>
                 <input type="text" class="form-control" id="af-active-from"/>
               </div>
               <div class="form-group col-12">
-                <label for="auction-factory-title">extendAuctionSecond</label>
-                <input type="text" class="form-control" id="auction-factory-title" placeholder="Auction Factory Title" />
+                <label for="af-extend">Extend Auction Second</label>
+                <input type="number" class="form-control" id="af-extend" placeholder="Extend Auction Second" value=0 />
               </div>
               <div class="form-group col-12">
-                <label for="currency-code">Auction Currency</label>
-                <select class="form-control" id="currency-code">
+                <label for="af-currency-code">Auction Currency</label>
+                <select class="form-control" id="af-currency-code">
                   <option value="DKK">DKK</option>
                   <option value="EUR">EUR</option>
                   <option value="VND">VND</option>
                 </select>
+              </div>
+              <div class="form-group col-12">
+                <button type="submit" id="af-create-new" class="btn btn-primary">Create Auction Factory</button>
               </div>
             </form>
           </div>
