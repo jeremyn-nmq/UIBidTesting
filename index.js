@@ -319,9 +319,7 @@ $(document).ready(function () {
           auctionFactories.push(data.results[i]);
           var afCard = 
               '<div class="card mb-3" style="min-width: 18rem;">\n' +
-                '<div class="overflow-hidden" style="max-height: 200px;">\n' +
-                  '<img class="mx-auto d-block w-100" alt="Card image cap" src="'+data.results[i].auctionImageURL+'" id="af-card-img">\n' +
-                '</div>\n' +
+                '<img class="card-img-top" alt="Card image cap" src="'+data.results[i].auctionImageURL+'" id="af-card-img">\n' +
                 '<div class="card-body">\n' +
                   '<h5 class="card-title">' + data.results[i].title + '</h5>\n' +
                   '<p class="card-text">' + data.results[i].id + '</p>\n' +
