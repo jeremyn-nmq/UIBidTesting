@@ -83,52 +83,21 @@
             </form>
           </div>
       </div>
-      <div class="col-sm-6 p-5">
+      <div class="col-6 p-5">
         <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
-          <h6 class="border-bottom border-gray pb-2 mb-3">Find AuctionSlot</h6>
-          <form class="row">
-            <div class="form-group col-6">
-              <label for="auction-slot-id">AuctionSlot Id</label>
-              <input type="text" class="form-control" id="auction-slot-id" placeholder="auctionSlotId" />
+          <h6 class="border-bottom border-gray pb-2 mb-3">Show Auction Factory</h6>
+            <div class="form-group">
+                <button type="submit" id="af-get-btn" class="btn btn-primary">Show Auction Factories</button>
             </div>
-            <div class="form-group col-6">
-              <label for="currency-code">Currency</label>
-              <select class="form-control" id="currency-code">
-                <option value="DKK">DKK</option>
-                <option value="EUR">EUR</option>
-                <option value="VND">VND</option>
-              </select>
-            </div>
-          </form>
-          <div class="form-group">
-            <label for="manual-bid-current">Current Price</label>
-            <input type="text" class="form-control form-control-lg" id="manual-bid-current" placeholder="1000" />
+            <div class="form-group">
+                <label for="total-result">Total Factories</label>
+                <h3 id="total-result">0</h3>
+              </div>
+        </div>
+        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
+            <div class="card-deck justify-content-center overflow-auto" style="max-height: 48vh;" id='af-show-area'>
+              </div>
           </div>
-        </div>
-        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
-          <h6 class="border-bottom border-gray pb-2 mb-3">Manual Bid</h6>
-          <form class="form">
-            <div class="form-group">
-              <label for="bid-increase">Bid Increase</label>
-              <input type="text" class="form-control col-6" id="bid-increase" placeholder="1000" />
-            </div>
-            <div class="form-group">
-              <label for="total-price">Total Estimated Price</label>
-              <h3 id="total-price">0</h3>
-            </div>
-            <button type="submit" id="manual-bid" class="actions btn btn-primary">Place bid</button>
-          </form>
-        </div>
-        <div class="mt-3 mb-5 p-3 bg-white rounded box-shadow shadow-lg">
-          <h6 class="border-bottom border-gray pb-2 mb-3">Auto Bid</h6>
-          <form class="form">
-            <div class="form-group">
-              <label for="autobid-max">Max autobid price</label>
-              <input type="text" class="form-control col-6" id="autobid-max" placeholder="Max price for autobid" />
-            </div>
-            <button type="submit" id="auto-bid" class="actions btn btn-primary">Place bid</button>
-          </form>
-        </div>
       </div>
     </div>
   </main>
