@@ -27,6 +27,39 @@ $(document).ready(function () {
     var factories = JSON.parse(localStorage.getItem('factories'));
     renderAutionRoomDetail(factories.find(af => af.id == id));
   }
+
+  if (window.location.href.indexOf("factory") > -1){
+    var factories = JSON.parse(localStorage.getItem('factories'));
+    if (factories && factories.length){
+      handleShowCards(factories);
+    }
+  }
+
+  //handle show auction factory cards
+  function handleShowCards(cardArray) {
+    var initBox = $('#af-show-area').html();
+    for (let i in cardArray)
+    {
+      let initCard = 
+          '<div class="card mb-3" style="min-width: 18rem;">\n' +
+            '<img class="card-img-top" alt="Card image cap" src="'+cardArray[i].auctionImageURL+'" id="af-card-img">\n' +
+            '<div class="card-body">\n' +
+              '<h5 class="card-title">' + cardArray[i].title + '</h5>\n' +
+              '<p class="card-text">' + cardArray[i].id + '</p>\n' +
+            '</div>\n' +
+            '<ul class="list-group list-group-flush">\n' +
+              '<li class="list-group-item">State: <span>'+cardArray[i].state+'</span></li>\n' +
+              '<li class="list-group-item">AuctionType: <span>'+cardArray[i].auctionType+'</span></li>\n' +
+            '</ul>\n' +
+            '<div class="card-body">\n' +
+              '<a class="card-link" href="'+window.location.origin+'/auctionRoomDetail.html?id='+cardArray[i].id+'">Details</a>\n' +
+            '</div>\n' +
+          '</div>\n';
+      initBox += initCard;
+      $('#af-show-area').html(initBox);
+    };
+    $('#total-result').html(cardArray.length);
+  }
   
   //endpoints and authorization
   var identityEndpoint =
@@ -265,34 +298,6 @@ $(document).ready(function () {
     $('#nav-countryrequirement-tab').html('Country requirement('+countryRequirement.length+')');
   }
 
-  //handle get requests
-  var handleGetRequest = function (token, url, body) {
-    $.ajax({
-      type: 'GET',
-      url: url,
-      crossDomain: true,
-      headers: {
-        "Authorization": 'Bearer ' + token,
-        "Content-Type": "application/json"
-      },
-      data: body,
-    })
-      .done(function (data) {
-        console.log(data);
-      })
-      .fail(function (jqXHR) {
-        if (jqXHR.responseJSON['message']){
-          $.notify(jqXHR.responseJSON.message, 'error');
-        }
-        else{
-          $.each(jqXHR.responseJSON.errors, function(key, item) 
-          {
-            console.log(item);
-            $.notify(item);
-          });
-        }
-      });
-  }
   //handle show auction factory
   $('#af-get-btn').click(function (e) {
     e.preventDefault();
@@ -309,33 +314,12 @@ $(document).ready(function () {
       data: requestBody,
     })
       .done(function (data) {
-        console.log(data);
-        var displayBox = $('#af-show-area').html();
         auctionFactories = [];
-        
+        handleShowCards(data.results)
         for (let i in data.results)
         {
-          console.log(data.results[i]);
           auctionFactories.push(data.results[i]);
-          var afCard = 
-              '<div class="card mb-3" style="min-width: 18rem;">\n' +
-                '<img class="card-img-top" alt="Card image cap" src="'+data.results[i].auctionImageURL+'" id="af-card-img">\n' +
-                '<div class="card-body">\n' +
-                  '<h5 class="card-title">' + data.results[i].title + '</h5>\n' +
-                  '<p class="card-text">' + data.results[i].id + '</p>\n' +
-                '</div>\n' +
-                '<ul class="list-group list-group-flush">\n' +
-                  '<li class="list-group-item">State: <span>'+data.results[i].state+'</span></li>\n' +
-                  '<li class="list-group-item">AuctionType: <span>'+data.results[i].auctionType+'</span></li>\n' +
-                '</ul>\n' +
-                '<div class="card-body">\n' +
-                  '<a class="card-link" href="'+window.location.origin+'/auctionRoomDetail.html?id='+data.results[i].id+'">Details</a>\n' +
-                '</div>\n' +
-              '</div>\n';
-          displayBox += afCard;
-          $('#af-show-area').html(displayBox);
         }
-        $('#total-result').html(auctionFactories.length);
         localStorage.setItem('factories', JSON.stringify(auctionFactories));
       })
       .fail(function (jqXHR) {
